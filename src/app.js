@@ -70,4 +70,42 @@ app.get('/api/notes', async (req,res)=>{
         notes});
 })
 
+/**
+ * @Route PATCH/api/notes/:id
+ * @description Update a note by id
+ * @access Public
+ */
+
+app.patch('/api/notes/:id', async (req, res) => {
+    const { id } = req.params;
+    const { description } = req.body;
+
+    if (!description) {
+        return res.status(400).json({
+            error: "Description is required"
+        });
+    }
+
+    if (description.trim().length < 4) {
+        return res.status(400).json({
+            error: "Description must be at least 4 characters long"
+        });
+    }
+
+    const note = await NoteModel.findById(id);
+
+    if (!note) {
+        return res.status(404).json({
+            error: "Note not found"
+        });
+    }
+
+    note.description = description;
+    await note.save();
+
+    return res.status(200).json({
+        message: "Note updated successfully",
+        note
+    });
+});
 export default app;
