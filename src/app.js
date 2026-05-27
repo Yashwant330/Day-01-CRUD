@@ -55,4 +55,19 @@ return res.status(201).json({
 })
 
 
+/**
+ * @Routes POST/api/notes
+ * @description to read or fetch from api
+ * @access Public
+ */
+
+app.get('/api/notes', async (req,res)=>{
+
+    const notes = await NoteModel.find();
+    
+    return res.status(200).json({
+        Message:"Notes",
+        notes});
+})
+
 export default app;
