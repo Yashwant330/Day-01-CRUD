@@ -108,4 +108,35 @@ app.patch('/api/notes/:id', async (req, res) => {
         note
     });
 });
+
+/**
+
+* @Route DELETE /api/notes/:id
+* @description Delete a note by id
+* @access Public
+  */
+
+app.delete('/api/notes/:id', async (req, res) => {
+const { id } = req.params;
+
+
+const note = await NoteModel.findById(id);
+
+if (!note) {
+    return res.status(404).json({
+        error: "Note not found"
+    });
+}
+
+await NoteModel.findByIdAndDelete(id);
+
+return res.status(200).json({
+    message: "Note deleted successfully"
+});
+
+
+});
+
+
+
 export default app;
